@@ -11,7 +11,7 @@ def render_all(con, entities, game_map, fov_recompute, root_console, screen_widt
                     con.draw_char(x,y,None,fg=None,bg=colors.get('light_ground'))
 
                 game_map.explored[x][y] = True
-                
+
             elif game_map.explored[x][y]:
                 if wall:
                     con.draw_char(x,y,None, fg=None, bg=colors.get('dark_wall'))
