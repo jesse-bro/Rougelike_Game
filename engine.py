@@ -4,6 +4,7 @@ from entity import Entity, get_blocking_entities_at_location
 from input_handlers import handle_keys
 from map_utils import make_map, GameMap
 from game_states import GameStates
+from components.fighter import Fighter
 
 def main():
     screen_width = 80
@@ -30,7 +31,8 @@ def main():
         'darkger_green': (0,127,0)
     }
 
-    player = Entity(0,0,'@',(255,255,255),'Player', blocks=True)
+    fighter_component = Fighter(hp=30, defense=2, power=5)
+    player = Entity(0,0,'@',(255,255,255),'Player', blocks=True,fighter=fighter_component)
     entities = [player]
 
     tdl.set_font('arial10x10.png', greyscale=True, altLayout=True)
@@ -75,8 +77,8 @@ def main():
 
         if game_state == GameStates.ENEMY_TURN:
             for entity in entities:
-                if entity != player:
-                    print('The '+ entity.name + ' ponders the meaning of its existence.')
+                if entity.ai:
+                    entity.ai.take_turn(player, game_map, entities)
 
             game_state = game_state.PLAYERS_TURN
 
@@ -90,7 +92,7 @@ def main():
                 target = get_blocking_entities_at_location(entities, destination_x, destination_y)
 
                 if target:
-                    print('You kick the ' + target.name + ' in the shins, much to its annoyance!')
+                    player.fighter.attack(target)
                 else:
                     player.move(dx,dy)
 
