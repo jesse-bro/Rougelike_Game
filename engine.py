@@ -1,10 +1,11 @@
 import tdl
-from render_functions import clear_all, render_all
+from render_functions import clear_all, render_all, RenderOrder
 from entity import Entity, get_blocking_entities_at_location
 from input_handlers import handle_keys
 from map_utils import make_map, GameMap
 from game_states import GameStates
 from components.fighter import Fighter
+from dead_function import kill_monster, kill_player
 
 def main():
     screen_width = 80
@@ -28,11 +29,12 @@ def main():
         'light_wall': (130,110,50),
         'light_ground': (200,180,50),
         'desaturated_green': (63,127,63),
-        'darkger_green': (0,127,0)
+        'darker_green': (0,127,0),
+        'dark_red': (191,0,0)
     }
 
     fighter_component = Fighter(hp=30, defense=2, power=5)
-    player = Entity(0,0,'@',(255,255,255),'Player', blocks=True,fighter=fighter_component)
+    player = Entity(0,0,'@',(255,255,255),'Player', blocks=True,fighter=fighter_component, render_order= RenderOrder.ACTOR)
     entities = [player]
 
     tdl.set_font('arial10x10.png', greyscale=True, altLayout=True)
@@ -52,7 +54,7 @@ def main():
         if fov_recompute:
             game_map.compute_fov(player.x,player.y, fov=fov_algo, radius=fov_radius, light_walls=fov_light_walls)
 
-        render_all(con, entities, game_map, fov_recompute, root_console, screen_width, screen_height, colors)
+        render_all(con, entities, player, game_map, fov_recompute, root_console, screen_width, screen_height, colors)
         tdl.flush()
 
         clear_all(con,entities)
@@ -75,13 +77,7 @@ def main():
         exit = action.get('exit')
         fullscreen = action.get('fullscreen')
 
-        if game_state == GameStates.ENEMY_TURN:
-            for entity in entities:
-                if entity.ai:
-                    entity.ai.take_turn(player, game_map, entities)
-
-            game_state = game_state.PLAYERS_TURN
-
+        player_turn_results = []
 
         if move and game_state == GameStates.PLAYERS_TURN:
             dx, dy = move
@@ -92,7 +88,8 @@ def main():
                 target = get_blocking_entities_at_location(entities, destination_x, destination_y)
 
                 if target:
-                    player.fighter.attack(target)
+                    attack_results = player.fighter.attack(target)
+                    player_turn_results.extend(attack_results)
                 else:
                     player.move(dx,dy)
 
@@ -100,10 +97,51 @@ def main():
 
                 game_state = GameStates.ENEMY_TURN
 
+        if game_state == GameStates.ENEMY_TURN:
+            for entity in entities:
+                if entity.ai:
+                    enemy_turn_results = entity.ai.take_turn(player, game_map, entities)
+
+                    for enemy_turn_result in enemy_turn_results:
+                        message = enemy_turn_result.get('message')
+                        dead_entity = enemy_turn_result.get('dead')
+
+                        if message:
+                            print(message)
+
+                        if dead_entity:
+                            if dead_entity == player:
+                                message, game_state = kill_player(dead_entity, colors)
+                            else:
+                                message = kill_monster(dead_entity, colors)
+
+                            print(message)
+
+                            if game_state == GameStates.PLAYER_DEAD:
+                                break
+                    if game_state == GameStates.PLAYER_DEAD:
+                        break
+                else:
+                    game_state = game_state.PLAYERS_TURN
+
         if exit:
             return True
         if fullscreen:
             tdl.set_fullscreen(not tdl.get_fullscreen())
+
+        for player_turn_result in player_turn_results:
+            message = player_turn_result.get('message')
+            dead_entity = player_turn_result.get('dead')
+
+            if message:
+                print(message)
+            if dead_entity:
+                if dead_entity == player:
+                    message, game_state = kill_player(dead_entity, colors)
+                else:
+                    message = kill_monster(dead_entity, colors)
+
+                print(message)
 
 
 if __name__ == '__main__':

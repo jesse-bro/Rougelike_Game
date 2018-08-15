@@ -3,7 +3,7 @@ from entity import Entity
 from random import randint
 from components.fighter import Fighter
 from components.ai import BasicMonster
-
+from render_functions import RenderOrder
 class GameMap(Map):
     def __init__(self,width,height):
         super().__init__(width, height)
@@ -58,12 +58,12 @@ def place_entities(room, entities, max_monsters_per_room, colors):
                 fighter_component = Fighter(hp=10,defense=0, power=3)
                 ai_component = BasicMonster()
 
-                monster = Entity(x,y,'o', colors.get('desaturated_green'), 'Orc', blocks=True,fighter=fighter_component, ai= ai_component)
+                monster = Entity(x,y,'o', colors.get('desaturated_green'), 'Orc', blocks=True,fighter=fighter_component, ai= ai_component, render_order= RenderOrder.ACTOR)
             else:
-                fighter_component = Fighter(hp=16,defesne=1, power=4)
+                fighter_component = Fighter(hp=16,defense=1, power=4)
                 ai_component = BasicMonster()
 
-                monster = Entity(x,y,'T', colors.get('darker_green'), 'Troll', blocks=True,fighter=fighter_component, ai= ai_component)
+                monster = Entity(x,y,'T', colors.get('darker_green'), 'Troll', blocks=True,fighter=fighter_component, ai= ai_component, render_order= RenderOrder.ACTOR)
 
             entities.append(monster)
 
