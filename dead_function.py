@@ -1,14 +1,15 @@
 from game_states import GameStates
+from game_messages import Message
 from render_functions import RenderOrder
 
 def kill_player(player, colors):
     player.char = '%'
     player.color = colors.get('dark_red')
 
-    return 'You died!', GameStates.PLAYER_DEAD
+    return Message('You Died!', colors.get('red')), GameStates.PLAYER_DEAD
 
 def kill_monster(monster, colors):
-    death_message = '{0} is dead!'.format(monster.name.capitalize())
+    death_message = Message('{0} is dead!'.format(monster.name.capitalize()), colors.get('orange'))
 
     monster.char = '%'
     monster.color = colors.get('dark_red')
