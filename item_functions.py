@@ -1,4 +1,5 @@
 from game_messages import Message
+from components.ai import ConfusedMonster
 
 def heal(*args, **kwargs):
     entity = args[0]
@@ -67,5 +68,34 @@ def cast_fireball(*args, **kwargs):
         if entity.distance(target_x,target_y) <= radius and entity.fighter:
             results.append({'message': Message('The {0} gets burned for {1} hit points.'.format(entity.name,damage), colors.get('orange'))})
             results.extend(entity.fighter.take_damage(damage))
+
+    return results
+
+def cast_confuse(*args, **kwargs):
+    colors = args[1]
+    entities = kwargs.get('entities')
+    game_map = kwargs.get('game_map')
+    target_x = kwargs.get('target_x')
+    target_y = kwargs.get('target_y')
+
+    results = []
+
+    if not game_map.fov[target_x, target_y]:
+        results.append({'consumed': False, 'message': Message('You cannot target a tile outside your field of view.', colors.get('yellow'))})
+
+        return results
+
+    for entity in entities:
+        if entity.x == target_x and entity.y == target_y and entity.ai:
+            confused_ai = ConfusedMonster(entity.ai, 10)
+
+            confused_ai.owner = entity
+            entity.ai = confused_ai
+
+            results.append({'consumed': True, 'message': Message('The eyes of the {0} look vacant, as he starts to stumble around!'.format(entity.name), colors.get('light_green'))})
+
+            break
+    else:
+        results.append({'conusmed': False, 'message': Message('There is no targetable enemy at that location.', colors.get('yellow'))})
 
     return results
