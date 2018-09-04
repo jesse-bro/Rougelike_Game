@@ -103,3 +103,16 @@ def handle_mouse(mouse_event):
             return {'right_click': (x,y)}
 
     return {}
+
+def handle_main_menu(user_input):
+    if user_input:
+        key_char = user_input.char
+
+        if key_char == 'a':
+            return {'new_game': True}
+        elif key_char == 'b':
+            return {'load_game': True}
+        elif key_char == 'c' or user_input.key == 'ESCAPE':
+            return {'exit': True}
+
+    return {}
