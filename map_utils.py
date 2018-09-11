@@ -6,6 +6,8 @@ from components.fighter import Fighter
 from components.ai import BasicMonster
 from components.item import Item
 from components.stairs import Stairs
+from components.equipment import EquipmentSlots
+from components.equippable import Equippable
 from render_functions import RenderOrder
 from item_functions import heal, cast_lightning, cast_fireball, cast_confuse
 from game_messages import Message
@@ -76,6 +78,8 @@ def place_entities(room, entities, dungeon_level, colors):
                        'troll': from_dungeon_level([[15,3],[30,5],[60,7]], dungeon_level)
                        }
     item_chances = {'healing_potion': 35,
+                    'sword': from_dungeon_level([[5,4]], dungeon_level),
+                    'shield': from_dungeon_level([[15,8]], dungeon_level),
                     'ligtning_scroll': from_dungeon_level([[25,4]], dungeon_level),
                     'fireball_scroll': from_dungeon_level([[25,6]],dungeon_level),
                     'confusion_scroll': from_dungeon_level([[10,2]],dungeon_level)
@@ -112,6 +116,14 @@ def place_entities(room, entities, dungeon_level, colors):
             if item_choice == 'healing_potion':
                 item_component = Item(use_function=heal, amount=40)
                 item = Entity(x,y, '!', colors.get('violet'), 'Healing Potion', render_order=RenderOrder.ITEM, item=item_component)
+
+            elif item_choice == 'sword':
+                equippable_component = Equippable(EquipmentSlots.MAIN_HAND, power_bonus=3)
+                item = Entity(x,y, '/', colors.get('sky'), 'Sword', equippable=equippable_component)
+
+            elif item_choice == 'shield':
+                equippable_component = Equippable(EquipmentSlots.OFF_HAND, defense_bonus=1)
+                item = Entity(x,y, '[', colors.get('darker_orange'),'Shield', equippable=equippable_component)
 
             elif item_choice == 'fireball_scroll':
                 item_component = Item(use_function=cast_fireball, targeting=True, targeting_message=Message('Left-click a target tile for the fireball, or right-click to cancel.',

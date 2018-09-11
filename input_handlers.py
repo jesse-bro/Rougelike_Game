@@ -143,7 +143,10 @@ def handle_level_up_menu(user_input):
     return {}
 
 def handle_character_screen(user_input):
-    if user_input == 'ESCAPE':
-        return {'exit': True}
+    if user_input:
+        key_char = user_input.char
+
+        if key_char == 'c' or user_input.key == 'ESCAPE':
+            return {'exit': True}
 
     return {}
