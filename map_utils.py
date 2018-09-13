@@ -78,9 +78,12 @@ def place_entities(room, entities, dungeon_level, colors):
                        'troll': from_dungeon_level([[15,3],[30,5],[60,7]], dungeon_level)
                        }
     item_chances = {'healing_potion': 35,
+                    'mega_potion': from_dungeon_level([[50,5]], dungeon_level),
                     'sword': from_dungeon_level([[5,4]], dungeon_level),
                     'shield': from_dungeon_level([[15,8]], dungeon_level),
-                    'armor': from_dungeon_level([[25,7]], dungeon_level),
+                    'chest_armor': from_dungeon_level([[25,9]], dungeon_level),
+                    'shoulder_armor': from_dungeon_level([[25,6]], dungeon_level),
+                    'leg_armor': from_dungeon_level([[30,5]], dungeon_level),
                     'ligtning_scroll': from_dungeon_level([[25,4]], dungeon_level),
                     'fireball_scroll': from_dungeon_level([[25,6]],dungeon_level),
                     'confusion_scroll': from_dungeon_level([[10,2]],dungeon_level)
@@ -118,17 +121,29 @@ def place_entities(room, entities, dungeon_level, colors):
                 item_component = Item(use_function=heal, amount=40)
                 item = Entity(x,y, '!', colors.get('violet'), 'Healing Potion', render_order=RenderOrder.ITEM, item=item_component)
 
+            elif item_choice == 'mega_potion':
+                item_component = Item(use_function=heal, amount=80)
+                item = Entity(x,y, '!', colors.get('gold'), 'Mega Healing Potion', render_order=RenderOrder.ITEM, item=item_component)
+
             elif item_choice == 'sword':
                 equippable_component = Equippable(EquipmentSlots.MAIN_HAND, power_bonus=3)
-                item = Entity(x,y, '/', colors.get('sky'), 'Sword', equippable=equippable_component)
+                item = Entity(x,y, '|', colors.get('sky'), 'Sword', equippable=equippable_component)
 
             elif item_choice == 'shield':
                 equippable_component = Equippable(EquipmentSlots.OFF_HAND, defense_bonus=1)
                 item = Entity(x,y, '[', colors.get('darker_orange'),'Shield', equippable=equippable_component)
 
-            elif item_choice == 'armor':
-                equippable_component = Equippable(EquipmentSlots.ARMOR, defense_bonus=2, max_hp_bonus=20)
-                item = Entity(x,y, ']', colors.get('sky'), 'Armor', equippable=equippable_component)
+            elif item_choice == 'chest_armor':
+                equippable_component = Equippable(EquipmentSlots.CHEST_ARMOR, defense_bonus=4, max_hp_bonus=20)
+                item = Entity(x,y, '/', colors.get('black'), 'Chest Armor', equippable=equippable_component)
+
+            elif item_choice == 'shoulder_armor':
+                equippable_component = Equippable(EquipmentSlots.SHOULDER_ARMOR, defense_bonus=3, power_bonus=3)
+                item = Entity(x,y, '}', colors.get('black'), 'Shoulder Armor', equippable=equippable_component)
+
+            elif item_choice == 'leg_armor':
+                equippable_component = Equippable(EquipmentSlots.LEG_ARMOR, defense_bonus=2, power_bonus=3)
+                item = Entity(x,y, '{', colors.get('black'), 'Leg Armor', equippable=equippable_component)
 
             elif item_choice == 'fireball_scroll':
                 item_component = Item(use_function=cast_fireball, targeting=True, targeting_message=Message('Left-click a target tile for the fireball, or right-click to cancel.',

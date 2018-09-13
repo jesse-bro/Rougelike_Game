@@ -3,4 +3,6 @@ from enum import Enum
 class EquipmentSlots(Enum):
     MAIN_HAND = 1
     OFF_HAND = 2
-    ARMOR = 3
+    CHEST_ARMOR = 3
+    SHOULDER_ARMOR = 4
+    LEG_ARMOR = 5
