@@ -218,7 +218,7 @@ def play_game(player, entities, game_map, message_log, game_state, root_console,
         if take_stairs and game_state == GameStates.PLAYERS_TURN:
             for entity in entities:
                 if entity.stairs and entity.x == player.x and entity.y == player.y:
-                    game_map, entities = next_floor(player, message_log, entities.stairs.floor, constants)
+                    game_map, entities = next_floor(player, message_log, entity.stairs.floor, constants)
                     fov_recompute = True
                     con.clear()
 

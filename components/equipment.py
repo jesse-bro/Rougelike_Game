@@ -1,9 +1,10 @@
 from equipment_slots import EquipmentSlots
 
 class Equipment:
-    def __init__(self, main_hand=None, off_hand=None):
+    def __init__(self, main_hand=None, off_hand=None, armor=None):
         self.main_hand = main_hand
         self.off_hand = off_hand
+        self.armor = armor
 
     @property
     def max_hp_bonus(self):
@@ -14,6 +15,9 @@ class Equipment:
 
         if self.off_hand and self.off_hand.equippable:
             bonus += self.off_hand.equippable.max_hp_bonus
+
+        if self.armor and self.armor.equippable:
+            bonus += self.armor.equippable.max_hp_bonus
 
         return bonus
 
@@ -38,6 +42,9 @@ class Equipment:
 
         if self.off_hand and self.off_hand.equippable:
             bonus += self.off_hand.equippable.defense_bonus
+
+        if self.armor and self.armor.equippable:
+            bonus += self.armor.equippable.defense_bonus
 
         return bonus
 
@@ -66,6 +73,17 @@ class Equipment:
                     results.append({'dequipped': self.off_hand})
 
                 self.off_hand = equippable_entity
+                results.append({'equipped': equippable_entity})
+
+        elif slot == EquipmentSlots.ARMOR:
+            if self.armor == equippable_entity:
+                self.armor = None
+                results.append({'dequipped': equippable_entity})
+            else:
+                if self.armor:
+                    results.append({'dequipped': self.armor})
+
+                self.armor = equippable_entity
                 results.append({'equipped': equippable_entity})
 
         return results
