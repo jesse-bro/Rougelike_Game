@@ -16,6 +16,18 @@ def heal(*args, **kwargs):
 
     return results
 
+def hard_shell(*args, **kwargs):
+    entity = args[0]
+    colors = args[1]
+    amount = kwargs.get('amount')
+
+    results = []
+
+    entity.fighter.boost_defense(amount)
+    results.append({'consumed': True, 'message': Message('You gain a boost in defense!', colors.get('green'))})
+
+    return results
+
 def cast_lightning(*args, **kwargs):
     caster = args[0]
     colors = args[1]

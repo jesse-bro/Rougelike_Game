@@ -64,3 +64,6 @@ class Fighter:
 
         if self.hp > self.max_hp:
             self.hp = self.max_hp
+
+    def boost_defense(self, amount):
+        self.base_defense += amount

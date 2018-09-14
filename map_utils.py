@@ -9,7 +9,7 @@ from components.stairs import Stairs
 from components.equipment import EquipmentSlots
 from components.equippable import Equippable
 from render_functions import RenderOrder
-from item_functions import heal, cast_lightning, cast_fireball, cast_confuse
+from item_functions import heal, hard_shell, cast_lightning, cast_fireball, cast_confuse
 from game_messages import Message
 
 class GameMap(Map):
@@ -78,7 +78,8 @@ def place_entities(room, entities, dungeon_level, colors):
                        'troll': from_dungeon_level([[15,3],[30,5],[60,7]], dungeon_level)
                        }
     item_chances = {'healing_potion': 35,
-                    'mega_potion': from_dungeon_level([[50,5]], dungeon_level),
+                    'mega_potion': from_dungeon_level([[25,5]], dungeon_level),
+                    'hard_shell': 10,#from_dungeon_level([[10,4]], dungeon_level),
                     'sword': from_dungeon_level([[5,4]], dungeon_level),
                     'shield': from_dungeon_level([[15,8]], dungeon_level),
                     'chest_armor': from_dungeon_level([[25,9]], dungeon_level),
@@ -124,6 +125,10 @@ def place_entities(room, entities, dungeon_level, colors):
             elif item_choice == 'mega_potion':
                 item_component = Item(use_function=heal, amount=80)
                 item = Entity(x,y, '!', colors.get('gold'), 'Mega Healing Potion', render_order=RenderOrder.ITEM, item=item_component)
+
+            elif item_choice == 'hard_shell':
+                item_component = Item(use_function=hard_shell, amount=1)
+                item = Entity(x,y, '!', colors.get('yellow'), 'Hard Shell Potion', render_order=RenderOrder.ITEM, item=item_component)
 
             elif item_choice == 'sword':
                 equippable_component = Equippable(EquipmentSlots.MAIN_HAND, power_bonus=3)
