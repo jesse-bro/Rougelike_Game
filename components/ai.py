@@ -39,3 +39,24 @@ class ConfusedMonster:
             results.append({'message': Message('The {0} is no longer confused!'.format(self.owner.name))})
 
         return results
+
+class FrozenMonster:
+    def __init__(self, previous_ai, number_of_turns=1):
+        self.previous_ai = previous_ai
+        self.number_of_turns = number_of_turns
+
+    def take_turn(self,  target, game_map, entities):
+        results = []
+
+        if self.number_of_turns > 0:
+            frozen_x = self.owner.x
+            frozen_y = self.owner.y
+
+            self.owner.move_towards(frozen_x, frozen_y, game_map, entities)
+
+            self.number_of_turns -= 1
+        else:
+            self.owner.ai = self.previous_ai
+            results.append({'message': Message('The {0} is no longer frozen!'.format(self.owner.name))})
+
+        return results

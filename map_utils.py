@@ -9,7 +9,7 @@ from components.stairs import Stairs
 from components.equipment import EquipmentSlots
 from components.equippable import Equippable
 from render_functions import RenderOrder
-from item_functions import heal, hard_shell, cast_lightning, cast_fireball, cast_confuse
+from item_functions import heal, hard_shell, cast_lightning, cast_fireball, cast_confuse, cast_freeze
 from game_messages import Message
 
 class GameMap(Map):
@@ -75,11 +75,12 @@ def place_entities(room, entities, dungeon_level, colors):
     number_of_items = randint(0,max_items_per_room)
 
     monster_chances = {'orc': 80,
-                       'troll': from_dungeon_level([[15,3],[30,5],[60,7]], dungeon_level)
+                       'troll': from_dungeon_level([[15,3],[30,5],[60,7]], dungeon_level),
+                       'death_knight': from_dungeon_level([[10,5],[20,7],[50,10]],dungeon_level)
                        }
     item_chances = {'healing_potion': 35,
                     'mega_potion': from_dungeon_level([[25,5]], dungeon_level),
-                    'hard_shell': 10,#from_dungeon_level([[10,4]], dungeon_level),
+                    'hard_shell': from_dungeon_level([[10,4]], dungeon_level),
                     'sword': from_dungeon_level([[5,4]], dungeon_level),
                     'shield': from_dungeon_level([[15,8]], dungeon_level),
                     'chest_armor': from_dungeon_level([[25,9]], dungeon_level),
@@ -87,7 +88,8 @@ def place_entities(room, entities, dungeon_level, colors):
                     'leg_armor': from_dungeon_level([[30,5]], dungeon_level),
                     'ligtning_scroll': from_dungeon_level([[25,4]], dungeon_level),
                     'fireball_scroll': from_dungeon_level([[25,6]],dungeon_level),
-                    'confusion_scroll': from_dungeon_level([[10,2]],dungeon_level)
+                    'confusion_scroll': from_dungeon_level([[10,2]],dungeon_level),
+                    'freeze_scroll': from_dungeon_level([[10,2]], dungeon_level)
                     }
 
     for i in range(number_of_monsters):
@@ -103,6 +105,13 @@ def place_entities(room, entities, dungeon_level, colors):
                 ai_component = BasicMonster()
 
                 monster = Entity(x,y,'o', colors.get('desaturated_green'), 'Orc', blocks=True,fighter=fighter_component, ai= ai_component, render_order= RenderOrder.ACTOR)
+
+            elif monster_choice == 'death_knight':
+                fighter_component = Fighter(hp=60, defense=4, power=13, xp=200)
+                ai_component = BasicMonster()
+
+                monster = Entity(x,y,'@', colors.get('black'), 'Death Knight', blocks=True, fighter=fighter_component, ai=ai_component,render_order=RenderOrder.ACTOR)
+
             else:
                 fighter_component = Fighter(hp=30,defense=2, power=8, xp=100)
                 ai_component = BasicMonster()
@@ -159,6 +168,10 @@ def place_entities(room, entities, dungeon_level, colors):
                 item_component = Item(use_function=cast_confuse, targeting=True, targeting_message=Message('Left-click an enemy to confuse it, or right-click to cancel.',
                                         colors.get('light_cyan')))
                 item = Entity(x,y,'#', colors.get('light_pink'), 'Confusion Scroll', render_order=RenderOrder.ITEM, item=item_component)
+
+            elif item_choice == 'freeze_scroll':
+                item_component = Item(use_function=cast_freeze, maximum_range=5, damage=1)
+                item = Entity(x,y,'#', colors.get('gold'), 'Freeze Scroll', render_order=RenderOrder.ITEM, item=item_component)
 
             else:
                 item_component = Item(use_function=cast_lightning, damage=40, maximum_range=5)
