@@ -74,7 +74,8 @@ def place_entities(room, entities, dungeon_level, colors):
     number_of_monsters = randint(0,max_monsters_per_room)
     number_of_items = randint(0,max_items_per_room)
 
-    monster_chances = {'orc': 80,
+    monster_chances = {'orc': from_dungeon_level([[90,2]], dungeon_level),
+                       'rat': from_dungeon_level([[75,1]], dungeon_level),
                        'troll': from_dungeon_level([[15,3],[30,5],[60,7]], dungeon_level),
                        'death_knight': from_dungeon_level([[10,5],[20,7],[50,10]],dungeon_level)
                        }
@@ -101,19 +102,25 @@ def place_entities(room, entities, dungeon_level, colors):
             monster_choice = random_choice_from_dict(monster_chances)
 
             if monster_choice == 'orc':
-                fighter_component = Fighter(hp=20,defense=0, power=4, xp=35)
+                fighter_component = Fighter(hp=20,defense=0, power=4, xp=35, gold=2)
                 ai_component = BasicMonster()
 
                 monster = Entity(x,y,'o', colors.get('desaturated_green'), 'Orc', blocks=True,fighter=fighter_component, ai= ai_component, render_order= RenderOrder.ACTOR)
 
+            elif monster_choice == 'rat':
+                fighter_component = Fighter(hp=10, defense=0, power=2, xp=10, gold=1)
+                ai_component = BasicMonster()
+
+                monster = Entity(x,y,'.', colors.get('black'), 'Rat', blocks=True, fighter=fighter_component, ai=ai_component, render_order=RenderOrder.ACTOR)
+
             elif monster_choice == 'death_knight':
-                fighter_component = Fighter(hp=60, defense=4, power=13, xp=200)
+                fighter_component = Fighter(hp=60, defense=4, power=13, xp=200, gold=10)
                 ai_component = BasicMonster()
 
                 monster = Entity(x,y,'@', colors.get('black'), 'Death Knight', blocks=True, fighter=fighter_component, ai=ai_component,render_order=RenderOrder.ACTOR)
 
             else:
-                fighter_component = Fighter(hp=30,defense=2, power=8, xp=100)
+                fighter_component = Fighter(hp=30,defense=2, power=8, xp=100, gold=5)
                 ai_component = BasicMonster()
 
                 monster = Entity(x,y,'T', colors.get('darker_green'), 'Troll', blocks=True,fighter=fighter_component, ai= ai_component, render_order= RenderOrder.ACTOR)

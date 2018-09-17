@@ -3,6 +3,7 @@ from components.inventory import Inventory
 from components.level import Level
 from components.equipment import Equipment
 from components.equippable import Equippable
+from components.gold import Gold
 from entity import Entity
 from game_messages import MessageLog
 from game_states import GameStates
@@ -93,9 +94,10 @@ def get_game_variables(constants):
     fighter_component = Fighter(hp=100, defense=1, power=2)
     inventory_component = Inventory(26)
     level_component = Level()
+    gold_component = Gold()
     equipment_component = Equipment()
     player = Entity(0, 0, '@', (255, 255, 255), 'Player', blocks=True, fighter=fighter_component,
-                    render_order=RenderOrder.ACTOR, inventory=inventory_component, level=level_component,
+                    render_order=RenderOrder.ACTOR, inventory=inventory_component, level=level_component, gold=gold_component,
                     equipment=equipment_component)
     entities = [player]
 

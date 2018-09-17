@@ -271,6 +271,7 @@ def play_game(player, entities, game_map, message_log, game_state, root_console,
             targeting = player_turn_result.get('targeting')
             targeting_cancelled = player_turn_result.get('targeting_cancelled')
             xp = player_turn_result.get('xp')
+            gold = player_turn_result.get('gold')
 
             if message:
                 message_log.add_message(message)
@@ -328,10 +329,14 @@ def play_game(player, entities, game_map, message_log, game_state, root_console,
                 message_log.add_message(Message('You gain {0} experience points.'.format(xp)))
 
                 if leveled_up:
-                    message_log.add_message(Message('Your battle skills grow stronger! You reached leve {0}'.format(player.level.current_level) + '!',
+                    message_log.add_message(Message('Your battle skills grow stronger! You reached level {0}'.format(player.level.current_level) + '!',
                                                 constants['colors'].get('yellow')))
                     previous_game_state = game_state
                     game_state = GameStates.LEVEL_UP
+
+            if gold:
+                gold_up = player.gold.add_gold(gold)
+                message_log.add_message(Message('You gained {0} gold!'.format(gold)))
 
 if __name__ == '__main__':
     main()

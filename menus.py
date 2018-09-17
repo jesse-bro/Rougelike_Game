@@ -43,6 +43,12 @@ def inventory_menu(con, root, header, player, inventory_width, screen_width, scr
                 options.append('{0} (on main hand)'.format(item.name))
             elif player.equipment.off_hand == item:
                 options.append('{0} (on off hand)'.format(item.name))
+            elif player.equipment.chest_armor == item:
+                options.append('{0} (on chest)'.format(item.name))
+            elif player.equipment.shoulder_armor == item:
+                options.append('{0} (on shoulders)'.format(item.name))
+            elif player.equipment.leg_armor == item:
+                options.append('{0} (on legs)'.format(item.name))
             else:
                 options.append(item.name)
 
@@ -65,9 +71,10 @@ def message_box(con, root_console, header, width, screen_width, screen_height):
     menu(con, root_console, header, [], width, screen_width, screen_height)
 
 def level_up_menu(con, root, header, player, menu_width, screen_width, screen_height):
-    options = ['Constituion (+20 HP, from {0})'.format(player.fighter.max_hp),
+    options = ['Constitution (+20 HP, from {0})'.format(player.fighter.max_hp),
                'Strength (+1 attack, from {0})'.format(player.fighter.power),
-               'Agility (+1 defense, from {0})'.format(player.fighter.defense)]
+               'Agility (+1 defense, from {0})'.format(player.fighter.defense),
+               ]
     menu(con, root, header, options, menu_width, screen_width, screen_height)
 
 def character_screen(root_console, player, character_screen_width, character_screen_height, screen_width,
@@ -80,9 +87,11 @@ def character_screen(root_console, player, character_screen_width, character_scr
     window.draw_str(0, 2, 'Level: {0}'.format(player.level.current_level))
     window.draw_str(0, 3, 'Experience: {0}'.format(player.level.current_xp))
     window.draw_str(0, 4, 'Experience to Level: {0}'.format(player.level.experience_to_next_level))
-    window.draw_str(0, 6, 'Maximum HP: {0}'.format(player.fighter.max_hp))
-    window.draw_str(0, 7, 'Attack: {0}'.format(player.fighter.power))
-    window.draw_str(0, 8, 'Defense: {0}'.format(player.fighter.defense))
+    window.draw_str(0, 5, 'Gold: {0}'.format(player.gold.current_gold))
+    window.draw_str(0, 7, 'Maximum HP: {0}'.format(player.fighter.max_hp))
+    window.draw_str(0, 8, 'Attack: {0}'.format(player.fighter.power))
+    window.draw_str(0, 9, 'Defense: {0}'.format(player.fighter.defense))
+
 
     x = screen_width // 2 - character_screen_width // 2
     y = screen_height // 2 - character_screen_height // 2
