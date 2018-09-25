@@ -6,6 +6,7 @@ from components.fighter import Fighter
 from components.ai import BasicMonster
 from components.item import Item
 from components.stairs import Stairs
+from components.store import Store
 from components.equipment import EquipmentSlots
 from components.equippable import Equippable
 from render_functions import RenderOrder
@@ -225,6 +226,12 @@ def make_map(game_map, max_rooms, room_min_size, room_max_size, map_width, map_h
                 #this is the first room, where the player starts at
                 player.x = new_x
                 player.y = new_y
+
+                # add store_component
+                store_component = Store(1)
+                store = Entity(new_x, new_y, 'X', (255, 255, 255), 'Store',
+                               render_order=RenderOrder.STORE, store=store_component)
+                entities.append(store)
 
             else:
                 #all rooms after first:

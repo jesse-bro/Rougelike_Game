@@ -21,13 +21,13 @@ def handle_player_turn_keys(user_input):
     key_char = user_input.char
 
     #Movement keys
-    if user_input.key == 'UP' or key_char  == 'k':
+    if user_input.key == 'UP' or key_char  == 'w':
         return {'move': (0,-1)}
-    elif user_input.key == 'DOWN' or key_char == 'j':
+    elif user_input.key == 'DOWN' or key_char == 's':
         return {'move': (0,1)}
-    elif user_input.key == 'LEFT' or key_char == 'h':
+    elif user_input.key == 'LEFT' or key_char == 'a':
         return {'move': (-1, 0)}
-    elif user_input.key == 'RIGHT' or key_char == 'l':
+    elif user_input.key == 'RIGHT' or key_char == 'd':
         return {'move': (1,0)}
     elif key_char == 'y':
         return {'move': (-1,-1)}
@@ -42,6 +42,9 @@ def handle_player_turn_keys(user_input):
 
     if key_char == 'g':
         return {'pickup': True}
+
+    elif key_char == 'q':
+        return {'in_store': True}
 
     elif key_char == 'i':
         return {'show_inventory': True}

@@ -9,6 +9,7 @@ class RenderOrder(Enum):
     CORPSE = 2
     ITEM = 3
     ACTOR = 4
+    STORE = 5
 
 def get_names_under_mouse(mouse_coordinates, entities, game_map):
     x, y = mouse_coordinates
@@ -79,6 +80,9 @@ def render_all(con, panel, entities, player, game_map, fov_recompute, root_conso
 
     elif game_state == GameStates.CHARACTER_SCREEN:
         character_screen(root_console, player, 30, 10, screen_width, screen_height)
+
+    elif game_state == GameStates.SHOW_STORE:
+        character_screen(root_console, player, 30,10, screen_width, screen_height)
 
     panel.clear(fg=colors.get('white'), bg= colors.get('black'))
 

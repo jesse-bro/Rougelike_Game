@@ -126,6 +126,7 @@ def play_game(player, entities, game_map, message_log, game_state, root_console,
         move = action.get('move')
         wait = action.get('wait')
         pickup = action.get('pickup')
+        in_store = action.get('in_store')
         show_inventory = action.get('show_inventory')
         inventory_index = action.get('inventory_index')
         take_stairs = action.get('take_stairs')
@@ -171,6 +172,16 @@ def play_game(player, entities, game_map, message_log, game_state, root_console,
 
             else:
                 message_log.add_message(Message('There is nothing here to pick up.', constants['colors'].get('yellow')))
+
+        if in_store and game_state == GameStates.PLAYERS_TURN:
+            for entity in entities:
+                if entity.store and entity.x == player.x and entity.y == player.y:
+                    previous_game_state = game_state
+                    game_state = GameStates.CHARACTER_SCREEN
+                    message_log.add_message(Message('Inside store.', constants['colors'].get('yellow')))
+                    break
+            else:
+                message_log.add_message(Message('There is no store here.', constants['colors'].get('yellow')))
 
         if game_state == GameStates.ENEMY_TURN:
             for entity in entities:

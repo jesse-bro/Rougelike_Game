@@ -31,6 +31,9 @@ def menu(con, root, header, options, width, screen_width, screen_height):
     y = screen_height // 2 - height // 2
     root.blit(window, x, y, width, height, 0,0)
 
+#def store_menu(con, root, header, store, inventory_width, screen_width, screen_height):
+
+
 def inventory_menu(con, root, header, player, inventory_width, screen_width, screen_height):
     # show a menu with each item of the inventory as an option
     if len(player.inventory.items) == 0:
