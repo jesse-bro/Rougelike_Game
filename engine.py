@@ -1,6 +1,6 @@
 import tdl
 from tcod import image_load
-from render_functions import clear_all, render_all
+from render_functions import clear_all, render_all, render_bar
 from entity import get_blocking_entities_at_location
 from input_handlers import handle_keys, handle_mouse, handle_main_menu
 from game_states import GameStates

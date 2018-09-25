@@ -89,8 +89,10 @@ def render_all(con, panel, entities, player, game_map, fov_recompute, root_conso
         y += 1
 
     render_bar(panel,1,1, bar_width, 'HP', player.fighter.hp, player.fighter.max_hp, colors.get('light_red'), colors.get('darker_red'), colors.get('white'))
+    render_bar(panel,1,2, bar_width, 'XP', player.level.current_xp, player.level.experience_to_next_level, colors.get('gold'), colors.get('black'), colors.get('white'))
 
-    panel.draw_str(1, 3, 'Dungeon Level: {0}'.format(game_map.dungeon_level), fg=colors.get('white'), bg=None)
+    panel.draw_str(1,3, 'Gold: {0}'.format(player.gold.current_gold), fg=colors.get('white'), bg=None)
+    panel.draw_str(1, 4, 'Dungeon Level: {0}'.format(game_map.dungeon_level), fg=colors.get('white'), bg=None)
 
     panel.draw_str(1, 0, get_names_under_mouse(mouse_coordinates, entities, game_map))
 
