@@ -1,4 +1,8 @@
 from game_messages import Message
+from components.item import Item
+from entity import Entity
+from render_functions import RenderOrder
+from item_functions import heal, hard_shell, cast_freeze, cast_confuse, cast_fireball, cast_lightning
 
 class Inventory:
     def __init__(self, capacity):
@@ -20,6 +24,50 @@ class Inventory:
             })
 
             self.items.append(item)
+
+        return results
+
+    def add_store_item(self, item, colors):
+        results = []
+
+        if len(self.items) >= self.capacity:
+            results.append({
+                'item_added': None,
+                'message': Message('You cannot carry any more, your inventory is full', colors.get('yellow'))
+            })
+
+        elif item == 'mega_potion':
+            item_component = Item(use_function=heal, amount=80)
+            item = Entity(0, 0, '!', colors.get('gold'), 'Mega Healing Potion', render_order=RenderOrder.ITEM,
+                          item=item_component)
+            results.append({
+                'item_added': item,
+                'message': Message('You bought the {0}!'.format(item.name), colors.get('blue'))
+            })
+            self.items.append(item)
+        elif item == 'healing_potion':
+            item_component = Item(use_function=heal, amount=40)
+            item = Entity(0, 0, '!', colors.get('violet'), 'Healing Potion', render_order=RenderOrder.ITEM,
+                          item=item_component)
+            results.append({
+                'item_added': item,
+                'message': Message('You bought the {0}!'.format(item.name), colors.get('blue'))
+            })
+            self.items.append(item)
+        elif item == 'hard_shell':
+            item_component = Item(use_function=hard_shell, amount=1)
+            item = Entity(0, 0, '!', colors.get('yellow'), 'Hard Shell Potion', render_order=RenderOrder.ITEM,
+                          item=item_component)
+            results.append({
+                'item_added': item,
+                'message': Message('You bought the {0}!'.format(item.name), colors.get('blue'))
+            })
+            self.items.append(item)
+        else:
+            results.append({
+                'item_added': None,
+                'message': Message('This is wrong', colors.get('yellow'))
+            })
 
         return results
 

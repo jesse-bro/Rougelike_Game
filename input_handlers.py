@@ -14,6 +14,8 @@ def handle_keys(user_input, game_state):
             return handle_level_up_menu(user_input)
         elif game_state == GameStates.CHARACTER_SCREEN:
             return handle_character_screen(user_input)
+        elif game_state == GameStates.SHOW_STORE:
+            return handle_store_screen(user_input)
     return {}
 
 
@@ -150,6 +152,21 @@ def handle_character_screen(user_input):
         key_char = user_input.char
 
         if key_char == 'c' or user_input.key == 'ESCAPE':
+            return {'exit': True}
+
+    return {}
+
+def handle_store_screen(user_input):
+    if user_input:
+        key_char = user_input.char
+
+        if key_char == 'a':
+            return {'bought': 'healing_potion'}
+        elif key_char == 'b':
+            return {'bought': 'mega_potion'}
+        elif key_char == 'c':
+            return {'bought': 'hard_shell'}
+        elif user_input.key == 'ESCAPE':
             return {'exit': True}
 
     return {}

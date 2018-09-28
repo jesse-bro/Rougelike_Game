@@ -132,6 +132,7 @@ def play_game(player, entities, game_map, message_log, game_state, root_console,
         take_stairs = action.get('take_stairs')
         drop_inventory = action.get('drop_inventory')
         level_up = action.get('level_up')
+        bought = action.get('bought')
         show_character_screen = action.get('show_character_screen')
         exit = action.get('exit')
         fullscreen = action.get('fullscreen')
@@ -177,8 +178,7 @@ def play_game(player, entities, game_map, message_log, game_state, root_console,
             for entity in entities:
                 if entity.store and entity.x == player.x and entity.y == player.y:
                     previous_game_state = game_state
-                    game_state = GameStates.CHARACTER_SCREEN
-                    message_log.add_message(Message('Inside store.', constants['colors'].get('yellow')))
+                    game_state = GameStates.SHOW_STORE
                     break
             else:
                 message_log.add_message(Message('There is no store here.', constants['colors'].get('yellow')))
@@ -237,6 +237,13 @@ def play_game(player, entities, game_map, message_log, game_state, root_console,
 
                 else:
                     message_log.add_message(Message('There are no stairs here.', constants['colors'].get('yellow')))
+        if bought:
+            if bought == 'healing_potion':
+                player.inventory.add_store_item('healing_potion', constants['colors'])
+            elif bought == 'mega_potion':
+                player.inventory.add_store_item('mega_potion', constants['colors'])
+            elif bought == 'hard_shell':
+                player.inventory.add_store_item('hard_shell', constants['colors'])
 
         if level_up:
             if level_up == 'hp':
@@ -263,7 +270,7 @@ def play_game(player, entities, game_map, message_log, game_state, root_console,
                 player_turn_results.append({'targeting_cancelled': True})
 
         if exit:
-            if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_SCREEN):
+            if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_SCREEN, GameStates.SHOW_STORE):
                 game_state = previous_game_state
             elif game_state == GameStates.TARGETING:
                 player_turn_results.append({'targeting_cancelled': True})
