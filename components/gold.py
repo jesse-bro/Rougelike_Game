@@ -4,3 +4,10 @@ class Gold:
 
     def add_gold(self, gold):
         self.current_gold += gold
+
+    def remove_gold(self, cost):
+        if self.current_gold >= cost:
+            self.current_gold -= cost
+            return True
+        else:
+            return False

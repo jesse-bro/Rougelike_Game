@@ -5,6 +5,7 @@ from random_utils import random_choice_from_dict, from_dungeon_level
 from components.fighter import Fighter
 from components.ai import BasicMonster
 from components.item import Item
+from components.inventory import Inventory
 from components.stairs import Stairs
 from components.store import Store
 from components.equipment import EquipmentSlots
@@ -20,11 +21,11 @@ class GameMap(Map):
 
         self.dungeon_level = dungeon_level
 
-def next_floor(player, message_log, dungeon_level, constants):
+def next_floor(player, store, message_log, dungeon_level, constants):
     game_map = GameMap(constants['map_width'], constants['map_height'], dungeon_level)
-    entities = [player]
+    entities = [player, store]
 
-    make_map(game_map, constants['max_rooms'], constants['room_min_size'], constants['room_max_size'], constants['map_width'], constants['map_height'], player, entities,
+    make_map(game_map, constants['max_rooms'], constants['room_min_size'], constants['room_max_size'], constants['map_width'], constants['map_height'], player, store, entities,
              constants['colors'])
 
     player.fighter.heal(player.fighter.max_hp // 2)
@@ -188,7 +189,7 @@ def place_entities(room, entities, dungeon_level, colors):
             entities.append(item)
 
 
-def make_map(game_map, max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities, colors):
+def make_map(game_map, max_rooms, room_min_size, room_max_size, map_width, map_height, player, store, entities, colors):
     rooms = []
     num_rooms = 0
 
@@ -227,11 +228,8 @@ def make_map(game_map, max_rooms, room_min_size, room_max_size, map_width, map_h
                 player.x = new_x
                 player.y = new_y
 
-                # add store_component
-                store_component = Store(1)
-                store = Entity(new_x, new_y, 'X', (255, 255, 255), 'Store',
-                               render_order=RenderOrder.STORE, store=store_component)
-                entities.append(store)
+                store.x = new_x+1
+                store.y = new_y+1
 
             else:
                 #all rooms after first:

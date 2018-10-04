@@ -10,6 +10,7 @@ from loader_functions.initialize_new_game import get_constants, get_game_variabl
 from loader_functions.data_loaders import load_game, save_game
 from menus import main_menu, message_box
 from map_utils import next_floor
+from components.store import check_item_price
 
 
 def main():
@@ -22,6 +23,7 @@ def main():
     panel = tdl.Console(constants['screen_width'], constants['panel_height'])
 
     player = None
+    store = None
     entities = []
     game_map = None
     message_log = None
@@ -57,7 +59,7 @@ def main():
             if show_load_error_message and (new_game or load_saved_game or exit_game):
                 show_load_error_message = False
             elif new_game:
-                player, entities, game_map, message_log, game_state = get_game_variables(constants)
+                player, store, entities, game_map, message_log, game_state = get_game_variables(constants)
                 game_state = GameStates.PLAYERS_TURN
 
                 show_main_menu = False
@@ -74,11 +76,11 @@ def main():
             root_console.clear()
             con.clear()
             panel.clear()
-            play_game(player, entities, game_map, message_log, game_state, root_console, con, panel, constants)
+            play_game(player, store, entities, game_map, message_log, game_state, root_console, con, panel, constants)
 
             show_main_menu = True
 
-def play_game(player, entities, game_map, message_log, game_state, root_console, con, panel, constants):
+def play_game(player, store, entities, game_map, message_log, game_state, root_console, con, panel, constants):
 
     tdl.set_font('arial10x10.png', greyscale=True, altLayout=True)
 
@@ -229,21 +231,25 @@ def play_game(player, entities, game_map, message_log, game_state, root_console,
         if take_stairs and game_state == GameStates.PLAYERS_TURN:
             for entity in entities:
                 if entity.stairs and entity.x == player.x and entity.y == player.y:
-                    game_map, entities = next_floor(player, message_log, entity.stairs.floor, constants)
+                    game_map, entities = next_floor(player, store, message_log, entity.stairs.floor, constants)
                     fov_recompute = True
                     con.clear()
 
                     break
 
-                else:
-                    message_log.add_message(Message('There are no stairs here.', constants['colors'].get('yellow')))
+            else:
+                message_log.add_message(Message('There are no stairs here.', constants['colors'].get('yellow')))
         if bought:
-            if bought == 'healing_potion':
-                player.inventory.add_store_item('healing_potion', constants['colors'])
-            elif bought == 'mega_potion':
-                player.inventory.add_store_item('mega_potion', constants['colors'])
-            elif bought == 'hard_shell':
-                player.inventory.add_store_item('hard_shell', constants['colors'])
+            #print(bought)
+            item_cost = check_item_price(bought)
+            if player.gold.current_gold >= item_cost:
+                player.inventory.add_store_item(bought, constants['colors'])
+                player.gold.remove_gold(item_cost)
+             #   print(player.gold.current_gold)
+             #   print(item_cost)
+            else:
+                message_log.add_message(Message('Trying to scam me? GET OUT!', constants['colors'].get('yellow')))
+                game_state = previous_game_state
 
         if level_up:
             if level_up == 'hp':

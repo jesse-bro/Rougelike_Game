@@ -78,18 +78,13 @@ def level_up_menu(con, root, header, player, menu_width, screen_width, screen_he
     menu(con, root, header, options, menu_width, screen_width, screen_height)
 
 def store_menu(con, root, header, store, menu_width, screen_width, screen_height):
-    options = ['Healing Potion (10 Gold)',
-                'Mega Potion',
-                'Hard Shell',
-                'Sword',
-                'Shield',
-                'Chest Armor',
-                'Shoulder Armor',
-                'Leg Armor',
-                'Lightning Scroll',
-                'Fireball Scroll',
-                'Confusion Scroll',
-                'Freeze Scroll']
+    options = ['Healing Potion (15 Gold)',
+                'Mega Potion (30 Gold)',
+                'Hard Shell (80 Gold)',
+                'Lightning Scroll (80 Gold)',
+                'Fireball Scroll (50 Gold)',
+                'Confusion Scroll (30 Gold)',
+                'Freeze Scroll (50 Gold)']
 
     menu(con, root, header, options, menu_width, screen_width, screen_height)
 

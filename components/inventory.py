@@ -36,7 +36,7 @@ class Inventory:
                 'message': Message('You cannot carry any more, your inventory is full', colors.get('yellow'))
             })
 
-        elif item == 'mega_potion':
+        if item == 'mega_potion':
             item_component = Item(use_function=heal, amount=80)
             item = Entity(0, 0, '!', colors.get('gold'), 'Mega Healing Potion', render_order=RenderOrder.ITEM,
                           item=item_component)
@@ -45,6 +45,7 @@ class Inventory:
                 'message': Message('You bought the {0}!'.format(item.name), colors.get('blue'))
             })
             self.items.append(item)
+
         elif item == 'healing_potion':
             item_component = Item(use_function=heal, amount=40)
             item = Entity(0, 0, '!', colors.get('violet'), 'Healing Potion', render_order=RenderOrder.ITEM,
@@ -54,6 +55,7 @@ class Inventory:
                 'message': Message('You bought the {0}!'.format(item.name), colors.get('blue'))
             })
             self.items.append(item)
+
         elif item == 'hard_shell':
             item_component = Item(use_function=hard_shell, amount=1)
             item = Entity(0, 0, '!', colors.get('yellow'), 'Hard Shell Potion', render_order=RenderOrder.ITEM,
@@ -63,6 +65,51 @@ class Inventory:
                 'message': Message('You bought the {0}!'.format(item.name), colors.get('blue'))
             })
             self.items.append(item)
+
+        elif item == 'lightning_scroll':
+            item_component = Item(use_function=cast_lightning, damage=40,maximum_range=5)
+            item = Entity(0, 0, '#', colors.get('yellow'), 'Lightning Scroll', render_order=RenderOrder.ITEM,
+                          item=item_component)
+            results.append({
+                'item_added': item,
+                'message': Message('You bought the {0}!'.format(item.name), colors.get('blue'))
+            })
+            self.items.append(item)
+
+        elif item == 'fireball_scroll':
+            item_component = Item(use_function=cast_fireball, targeting=True, targeting_message=Message(
+                'Left-click a target tile for the fireball, or right-click to cancel.',
+                colors.get('light_cyan')), damage=25, radius=3)
+            item = Entity(0, 0, '#', colors.get('red'), 'Fireball Scroll', render_order=RenderOrder.ITEM,
+                          item=item_component)
+            results.append({
+                'item_added': item,
+                'message': Message('You bought the {0}!'.format(item.name), colors.get('blue'))
+            })
+            self.items.append(item)
+
+        elif item == 'confusion_scroll':
+            item_component = Item(use_function=cast_confuse, targeting=True, targeting_message=Message(
+                'Left-click an enemy to confuse it, or right-click to cancel.',
+                colors.get('light_cyan')))
+            item = Entity(0, 0, '#', colors.get('light_pink'), 'Confusion Scroll', render_order=RenderOrder,
+                          item=item_component)
+            results.append({
+                'item_added': item,
+                'message': Message('You bought the {0}!'.format(item.name), colors.get('blue'))
+            })
+            self.items.append(item)
+
+        elif item == 'freeze_scroll':
+            item_component = Item(use_function=cast_freeze, damage=1,maximum_range=5)
+            item = Entity(0, 0, '#', colors.get('gold'), 'Freeze Scroll', render_order=RenderOrder.ITEM,
+                          item=item_component)
+            results.append({
+                'item_added': item,
+                'message': Message('You bought the {0}!'.format(item.name), colors.get('blue'))
+            })
+            self.items.append(item)
+
         else:
             results.append({
                 'item_added': None,

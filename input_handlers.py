@@ -158,15 +158,23 @@ def handle_character_screen(user_input):
 
 def handle_store_screen(user_input):
     if user_input:
-        key_char = user_input.char
+         key_char = user_input.char
 
-        if key_char == 'a':
-            return {'bought': 'healing_potion'}
-        elif key_char == 'b':
-            return {'bought': 'mega_potion'}
-        elif key_char == 'c':
-            return {'bought': 'hard_shell'}
-        elif user_input.key == 'ESCAPE':
-            return {'exit': True}
+         if key_char == 'a':
+             return {'bought': 'healing_potion'}
+         elif key_char == 'b':
+             return {'bought': 'mega_potion'}
+         elif key_char == 'c':
+             return {'bought': 'hard_shell'}
+         elif key_char == 'd':
+             return {'bought': 'lightning_scroll'}
+         elif key_char == 'e':
+             return {'bought': 'fireball_scroll'}
+         elif key_char == 'f':
+             return {'bought': 'confusion_scroll'}
+         elif key_char == 'g':
+             return {'bought': 'freeze_scroll'}
+         elif user_input.key == 'ESCAPE':
+             return {'exit': True}
 
     return {}

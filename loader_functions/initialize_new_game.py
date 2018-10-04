@@ -10,6 +10,7 @@ from game_states import GameStates
 from map_utils import GameMap, make_map
 from render_functions import RenderOrder
 from equipment_slots import EquipmentSlots
+from components.store import Store
 
 def get_constants():
     window_title = 'Roguelike Tutorial Revised'
@@ -91,15 +92,21 @@ def get_constants():
     return constants
 
 def get_game_variables(constants):
-    fighter_component = Fighter(hp=1000, defense=1, power=2)
+    fighter_component = Fighter(hp=100, defense=1, power=2)
     inventory_component = Inventory(26)
     level_component = Level()
-    gold_component = Gold()
+    gold_component = Gold(100)
     equipment_component = Equipment()
     player = Entity(0, 0, '@', (255, 255, 255), 'Player', blocks=True, fighter=fighter_component,
                     render_order=RenderOrder.ACTOR, inventory=inventory_component, level=level_component, gold=gold_component,
                     equipment=equipment_component)
     entities = [player]
+
+    store_component = Store(1)
+    store = Entity(0, 0, 'O', (255, 255, 255), 'Store',
+                   render_order=RenderOrder.STORE, store=store_component)
+    entities.append(store)
+
 
     equippable_component = Equippable(EquipmentSlots.MAIN_HAND, power_bonus=2)
     dagger = Entity(0,0, '-', constants['colors'].get('sky'), 'Dagger', equippable=equippable_component)
@@ -108,10 +115,10 @@ def get_game_variables(constants):
 
     game_map = GameMap(constants['map_width'], constants['map_height'])
     make_map(game_map, constants['max_rooms'], constants['room_min_size'], constants['room_max_size'],
-             constants['map_width'], constants['map_height'], player, entities, constants['colors'])
+             constants['map_width'], constants['map_height'], player, store, entities, constants['colors'])
 
     message_log = MessageLog(constants['message_x'], constants['message_width'], constants['message_height'])
 
     game_state = GameStates.PLAYERS_TURN
 
-    return player, entities, game_map, message_log, game_state
+    return player, store, entities, game_map, message_log, game_state
