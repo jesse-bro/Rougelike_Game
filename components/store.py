@@ -16,7 +16,7 @@ def check_item_price(bought):
             cost = 30
             return cost
         elif bought == 'hard_shell':
-            cost = 80
+            cost = 100
             return cost
         elif bought == 'Lightning Scroll':
             cost = 80

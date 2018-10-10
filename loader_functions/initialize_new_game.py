@@ -102,12 +102,6 @@ def get_game_variables(constants):
                     equipment=equipment_component)
     entities = [player]
 
-    store_component = Store(1)
-    store = Entity(0, 0, 'O', (255, 255, 255), 'Store',
-                   render_order=RenderOrder.STORE, store=store_component)
-    entities.append(store)
-
-
     equippable_component = Equippable(EquipmentSlots.MAIN_HAND, power_bonus=2)
     dagger = Entity(0,0, '-', constants['colors'].get('sky'), 'Dagger', equippable=equippable_component)
     player.inventory.add_item(dagger, constants['colors'])
@@ -115,10 +109,10 @@ def get_game_variables(constants):
 
     game_map = GameMap(constants['map_width'], constants['map_height'])
     make_map(game_map, constants['max_rooms'], constants['room_min_size'], constants['room_max_size'],
-             constants['map_width'], constants['map_height'], player, store, entities, constants['colors'])
+             constants['map_width'], constants['map_height'], player, entities, constants['colors'])
 
     message_log = MessageLog(constants['message_x'], constants['message_width'], constants['message_height'])
 
     game_state = GameStates.PLAYERS_TURN
 
-    return player, store, entities, game_map, message_log, game_state
+    return player, entities, game_map, message_log, game_state

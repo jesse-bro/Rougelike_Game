@@ -21,11 +21,11 @@ class GameMap(Map):
 
         self.dungeon_level = dungeon_level
 
-def next_floor(player, store, message_log, dungeon_level, constants):
+def next_floor(player, message_log, dungeon_level, constants):
     game_map = GameMap(constants['map_width'], constants['map_height'], dungeon_level)
-    entities = [player, store]
+    entities = [player]
 
-    make_map(game_map, constants['max_rooms'], constants['room_min_size'], constants['room_max_size'], constants['map_width'], constants['map_height'], player, store, entities,
+    make_map(game_map, constants['max_rooms'], constants['room_min_size'], constants['room_max_size'], constants['map_width'], constants['map_height'], player, entities,
              constants['colors'])
 
     player.fighter.heal(player.fighter.max_hp // 2)
@@ -86,9 +86,9 @@ def place_entities(room, entities, dungeon_level, colors):
                     'hard_shell': from_dungeon_level([[10,4]], dungeon_level),
                     'sword': from_dungeon_level([[5,4]], dungeon_level),
                     'shield': from_dungeon_level([[15,8]], dungeon_level),
-                    'chest_armor': from_dungeon_level([[25,9]], dungeon_level),
-                    'shoulder_armor': from_dungeon_level([[25,6]], dungeon_level),
-                    'leg_armor': from_dungeon_level([[30,5]], dungeon_level),
+                    'chest_armor': from_dungeon_level([[10,9]], dungeon_level),
+                    'shoulder_armor': from_dungeon_level([[10,6]], dungeon_level),
+                    'leg_armor': from_dungeon_level([[10,5]], dungeon_level),
                     'ligtning_scroll': from_dungeon_level([[25,4]], dungeon_level),
                     'fireball_scroll': from_dungeon_level([[25,6]],dungeon_level),
                     'confusion_scroll': from_dungeon_level([[10,2]],dungeon_level),
@@ -189,7 +189,7 @@ def place_entities(room, entities, dungeon_level, colors):
             entities.append(item)
 
 
-def make_map(game_map, max_rooms, room_min_size, room_max_size, map_width, map_height, player, store, entities, colors):
+def make_map(game_map, max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities, colors):
     rooms = []
     num_rooms = 0
 
@@ -228,9 +228,6 @@ def make_map(game_map, max_rooms, room_min_size, room_max_size, map_width, map_h
                 player.x = new_x
                 player.y = new_y
 
-                store.x = new_x+1
-                store.y = new_y+1
-
             else:
                 #all rooms after first:
                 # connect it to the previous room with a tunnel
@@ -252,6 +249,11 @@ def make_map(game_map, max_rooms, room_min_size, room_max_size, map_width, map_h
             #finally, append the new room to the list
             rooms.append(new_room)
             num_rooms += 1
+
+    store_component = Store(1)
+    store = Entity(center_of_last_room_x + randint(1,3), center_of_last_room_y + randint(1,3), 'O', (255, 255, 255), 'Store',
+                   render_order=RenderOrder.STORE, store=store_component)
+    entities.append(store)
 
     stairs_component = Stairs(game_map.dungeon_level + 1)
     down_stairs = Entity(center_of_last_room_x, center_of_last_room_y,'>', (255,255,255), 'Stairs', render_order=RenderOrder.STAIRS, stairs=stairs_component)

@@ -59,7 +59,7 @@ def main():
             if show_load_error_message and (new_game or load_saved_game or exit_game):
                 show_load_error_message = False
             elif new_game:
-                player, store, entities, game_map, message_log, game_state = get_game_variables(constants)
+                player, entities, game_map, message_log, game_state = get_game_variables(constants)
                 game_state = GameStates.PLAYERS_TURN
 
                 show_main_menu = False
@@ -76,11 +76,11 @@ def main():
             root_console.clear()
             con.clear()
             panel.clear()
-            play_game(player, store, entities, game_map, message_log, game_state, root_console, con, panel, constants)
+            play_game(player, entities, game_map, message_log, game_state, root_console, con, panel, constants)
 
             show_main_menu = True
 
-def play_game(player, store, entities, game_map, message_log, game_state, root_console, con, panel, constants):
+def play_game(player, entities, game_map, message_log, game_state, root_console, con, panel, constants):
 
     tdl.set_font('arial10x10.png', greyscale=True, altLayout=True)
 
@@ -231,7 +231,7 @@ def play_game(player, store, entities, game_map, message_log, game_state, root_c
         if take_stairs and game_state == GameStates.PLAYERS_TURN:
             for entity in entities:
                 if entity.stairs and entity.x == player.x and entity.y == player.y:
-                    game_map, entities = next_floor(player, store, message_log, entity.stairs.floor, constants)
+                    game_map, entities = next_floor(player, message_log, entity.stairs.floor, constants)
                     fov_recompute = True
                     con.clear()
 
