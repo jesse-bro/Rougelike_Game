@@ -92,7 +92,7 @@ class Equipment:
                 results.append({'dequipped': equippable_entity})
             else:
                 if self.chest_armor:
-                    results.append({'dequipped': self.armor})
+                    results.append({'dequipped': self.chest_armor})
 
                 self.chest_armor = equippable_entity
                 results.append({'equipped': equippable_entity})
@@ -103,7 +103,7 @@ class Equipment:
                 results.append({'dequipped': equippable_entity})
             else:
                 if self.shoulder_armor:
-                    results.append({'dequipped': self.armor})
+                    results.append({'dequipped': self.shoulder_armor})
 
                 self.shoulder_armor = equippable_entity
                 results.append({'equipped': equippable_entity})
@@ -114,7 +114,7 @@ class Equipment:
                 results.append({'dequipped': equippable_entity})
             else:
                 if self.leg_armor:
-                    results.append({'dequipped': self.armor})
+                    results.append({'dequipped': self.leg_armor})
 
                 self.leg_armor = equippable_entity
                 results.append({'equipped': equippable_entity})

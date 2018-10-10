@@ -178,3 +178,6 @@ def handle_store_screen(user_input):
              return {'exit': True}
 
     return {}
+
+def handle_controls_screen(user_input):
+    return {}

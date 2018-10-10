@@ -360,7 +360,7 @@ def play_game(player, entities, game_map, message_log, game_state, root_console,
 
             if gold:
                 gold_up = player.gold.add_gold(gold)
-                message_log.add_message(Message('You gained {0} gold!'.format(gold)))
+                message_log.add_message(Message('You gained {0} gold!'.format(gold), constants['colors'].get('yellow')))
 
 if __name__ == '__main__':
     main()

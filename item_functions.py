@@ -16,6 +16,19 @@ def heal(*args, **kwargs):
 
     return results
 
+def xp_boost(*args, **kwargs):
+    entity = args[0]
+    colors = args[1]
+    amount = kwargs.get('amount')
+
+    results = []
+
+    entity.level.add_xp(amount)
+    results.append({'consumed': True, 'message': Message('You gain some experience!', colors.get('yellow'))})
+
+    return results
+
+
 def hard_shell(*args, **kwargs):
     entity = args[0]
     colors = args[1]

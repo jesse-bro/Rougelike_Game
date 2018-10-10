@@ -11,7 +11,7 @@ from components.store import Store
 from components.equipment import EquipmentSlots
 from components.equippable import Equippable
 from render_functions import RenderOrder
-from item_functions import heal, hard_shell, cast_lightning, cast_fireball, cast_confuse, cast_freeze
+from item_functions import heal, hard_shell, cast_lightning, cast_fireball, cast_confuse, cast_freeze, xp_boost
 from game_messages import Message
 
 class GameMap(Map):
@@ -76,10 +76,11 @@ def place_entities(room, entities, dungeon_level, colors):
     number_of_monsters = randint(0,max_monsters_per_room)
     number_of_items = randint(0,max_items_per_room)
 
-    monster_chances = {'orc': from_dungeon_level([[90,2]], dungeon_level),
-                       'rat': from_dungeon_level([[75,1]], dungeon_level),
+    monster_chances = {'orc': from_dungeon_level([[10,1],[90,2]], dungeon_level),
+                       'rat': from_dungeon_level([[60,1]], dungeon_level),
+                       'snake': from_dungeon_level([[50,5],[60,6],[70,8]], dungeon_level),
                        'troll': from_dungeon_level([[15,3],[30,5],[60,7]], dungeon_level),
-                       'death_knight': from_dungeon_level([[10,5],[20,7],[50,10]],dungeon_level)
+                       'death_knight': from_dungeon_level([[10,5],[50,7],[80,10]],dungeon_level)
                        }
     item_chances = {'healing_potion': 35,
                     'mega_potion': from_dungeon_level([[25,5]], dungeon_level),
@@ -92,7 +93,8 @@ def place_entities(room, entities, dungeon_level, colors):
                     'ligtning_scroll': from_dungeon_level([[25,4]], dungeon_level),
                     'fireball_scroll': from_dungeon_level([[25,6]],dungeon_level),
                     'confusion_scroll': from_dungeon_level([[10,2]],dungeon_level),
-                    'freeze_scroll': from_dungeon_level([[10,2]], dungeon_level)
+                    'freeze_scroll': from_dungeon_level([[10,2]], dungeon_level),
+                    'mysterious_bottle': from_dungeon_level([[1,1]], dungeon_level)
                     }
 
     for i in range(number_of_monsters):
@@ -182,6 +184,10 @@ def place_entities(room, entities, dungeon_level, colors):
                 item_component = Item(use_function=cast_freeze, maximum_range=5, damage=1)
                 item = Entity(x,y,'#', colors.get('gold'), 'Freeze Scroll', render_order=RenderOrder.ITEM, item=item_component)
 
+            elif item_choice == 'mysterious_bottle':
+                item_component = Item(use_function=xp_boost, amount= randint(30,100))
+                item = Entity(x,y,'?', colors.get('red'), 'Mystery Bottle', render_order=RenderOrder.ITEM, item=item_component)
+
             else:
                 item_component = Item(use_function=cast_lightning, damage=40, maximum_range=5)
                 item = Entity(x,y,'#', colors.get('yellow'), 'Lightning Scroll', render_order=RenderOrder.ITEM, item=item_component)
@@ -251,7 +257,7 @@ def make_map(game_map, max_rooms, room_min_size, room_max_size, map_width, map_h
             num_rooms += 1
 
     store_component = Store(1)
-    store = Entity(center_of_last_room_x + randint(1,3), center_of_last_room_y + randint(1,3), 'O', (255, 255, 255), 'Store',
+    store = Entity(center_of_last_room_x + randint(1,2), center_of_last_room_y + randint(1,2), 'O', (255, 255, 255), 'Store',
                    render_order=RenderOrder.STORE, store=store_component)
     entities.append(store)
 
