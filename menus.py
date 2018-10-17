@@ -107,3 +107,34 @@ def character_screen(root_console, player, character_screen_width, character_scr
     x = screen_width // 2 - character_screen_width // 2
     y = screen_height // 2 - character_screen_height // 2
     root_console.blit(window, x, y, character_screen_width, character_screen_height, 0, 0)
+
+def control_screen(root_console, character_screen_width, character_screen_height, screen_width, screen_height):
+    window = tdl.Console(character_screen_width, character_screen_height)
+
+    window.draw_str(0, 1, 'GAME CONTROLS - ESC/x to quit')
+    window.draw_str(0, 2, 'W - Move Up')
+    window.draw_str(0, 3, 'S - Move Down')
+    window.draw_str(0, 4, 'A - Move Left')
+    window.draw_str(0, 5, 'D - Move Right')
+
+    window.draw_str(0, 7, 'I - Open Inventory (ESC to quit)')
+    window.draw_str(0, 8, 'G - Pick-Up Item')
+    window.draw_str(0, 9, 'R - Drop Item')
+
+    window.draw_str(0, 11, 'STAIRS - Next Level')
+    window.draw_str(0, 12, 'Shift + . - Go Down the Stairs')
+
+    window.draw_str(0, 14, 'Store Controls')
+    window.draw_str(0, 15, 'Q - Open Store/Quit Store')
+
+    window.draw_str(0, 17, 'Character Information')
+    window.draw_str(0, 18, 'C - Open/Close Character Info. Screen')
+
+    x = screen_width // 2 - character_screen_width // 2
+    y = screen_height // 2 - character_screen_height // 2
+    root_console.blit(window, x, y, character_screen_width, character_screen_height, 0, 0)
+
+
+
+
+

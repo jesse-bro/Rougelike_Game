@@ -16,6 +16,8 @@ def handle_keys(user_input, game_state):
             return handle_character_screen(user_input)
         elif game_state == GameStates.SHOW_STORE:
             return handle_store_screen(user_input)
+        elif game_state == GameStates.CONTROL_SCREEN:
+            return handle_controls_screen(user_input)
     return {}
 
 
@@ -51,7 +53,7 @@ def handle_player_turn_keys(user_input):
     elif key_char == 'i':
         return {'show_inventory': True}
 
-    elif key_char == 'd':
+    elif key_char == 'r':
         return {'drop_inventory': True}
 
     elif key_char == '.' and user_input.shift:
@@ -59,6 +61,9 @@ def handle_player_turn_keys(user_input):
 
     elif key_char == 'c':
         return {'show_character_screen': True}
+
+    elif key_char == 'x':
+        return {'show_control_screen': True}
 
     if user_input.key == 'ENTER' and user_input.alt:
         # Alt+Enter: toggle full screen
@@ -180,4 +185,10 @@ def handle_store_screen(user_input):
     return {}
 
 def handle_controls_screen(user_input):
+    if user_input:
+        key_char = user_input.char
+
+        if key_char == 'x' or user_input.key == 'ESCAPE':
+            return {'exit': True}
+
     return {}

@@ -2,7 +2,7 @@ from enum import Enum
 
 from game_states import GameStates
 
-from menus import inventory_menu, level_up_menu, character_screen, store_menu
+from menus import inventory_menu, level_up_menu, character_screen, store_menu, control_screen
 
 class RenderOrder(Enum):
     STAIRS = 1
@@ -83,6 +83,9 @@ def render_all(con, panel, entities, player, game_map, fov_recompute, root_conso
 
     elif game_state == GameStates.SHOW_STORE:
         store_menu(con, root_console, 'Store', player, 40, screen_width, screen_height)
+
+    elif game_state == GameStates.CONTROL_SCREEN:
+        control_screen(root_console, 40, 20, screen_width, screen_height)
 
     panel.clear(fg=colors.get('white'), bg=colors.get('black'))
 

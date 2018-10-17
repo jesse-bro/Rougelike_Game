@@ -136,6 +136,7 @@ def play_game(player, entities, game_map, message_log, game_state, root_console,
         level_up = action.get('level_up')
         bought = action.get('bought')
         show_character_screen = action.get('show_character_screen')
+        show_control_screen = action.get('show_control_screen')
         exit = action.get('exit')
         fullscreen = action.get('fullscreen')
 
@@ -266,6 +267,10 @@ def play_game(player, entities, game_map, message_log, game_state, root_console,
             previous_game_state = game_state
             game_state = GameStates.CHARACTER_SCREEN
 
+        if show_control_screen:
+            previous_game_state = game_state
+            game_state = GameStates.CONTROL_SCREEN
+
         if game_state == GameStates.TARGETING:
             if left_click:
                 target_x, target_y = left_click
@@ -276,7 +281,7 @@ def play_game(player, entities, game_map, message_log, game_state, root_console,
                 player_turn_results.append({'targeting_cancelled': True})
 
         if exit:
-            if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_SCREEN, GameStates.SHOW_STORE):
+            if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY, GameStates.CHARACTER_SCREEN, GameStates.SHOW_STORE, GameStates.CONTROL_SCREEN):
                 game_state = previous_game_state
             elif game_state == GameStates.TARGETING:
                 player_turn_results.append({'targeting_cancelled': True})
